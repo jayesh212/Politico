@@ -1,0 +1,1 @@
+A Political Background Analyser from twitter data
