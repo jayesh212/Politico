@@ -1,13 +1,21 @@
 .input-card-container{
-    height: 600px;
+    height: 100px;
     width: 400px;
     box-shadow: black 10px;
     padding: 10px;
     justify-content: center;
+    box-shadow: #2196f3 1px 1px 10px;
+    border-radius: 8px;
 }
 .input-container{
-    padding: 10px;
+    padding-top: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
+}
+.input-style{
+    width: 240px;
+}
+.button-container{
+    width: 120px;
 }

@@ -1,4 +1,4 @@
-import { TextField, Button, Card } from "@mui/material";
+import { TextField, Button} from "@mui/material";
 import { useState } from "react";
 import "./InputCard.css";
 
@@ -11,7 +11,7 @@ function InputCard() {
     alert(userName);
   };
   return (
-    <Card variant="outlined" className="input-card-container">
+    <div className="input-card-container">
       <div className="input-container">
         <TextField
           id="standard-basic"
@@ -19,12 +19,15 @@ function InputCard() {
           variant="standard"
           value={userName}
           onChange={onUsernameChange}
+          size="small"
+          required= {true}
+          className="input-style"
         ></TextField>
-        <Button variant="contained" onClick={onGenerateClick}>
+        <Button variant="contained" onClick={onGenerateClick} size="medium" className="button-container">
           Generate
         </Button>
       </div>
-    </Card>
+    </div>
   );
 }
 export default InputCard;
