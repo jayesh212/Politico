@@ -1,15 +1,29 @@
 import { TextField, Button} from "@mui/material";
 import { useState } from "react";
+import axios from 'axios';
+
+
 import "./InputCard.css";
 
 function InputCard() {
   const [userName, setUserName] = useState("");
+
   const onUsernameChange = (ev) => {
     setUserName(ev.target.value);
   };
+
+  const BASE_URL = 'http://localhost:3000'
+  
   const onGenerateClick = () => {
-    alert(userName);
+    var queryString = `${BASE_URL}/query?username=${userName}`
+    console.log(queryString);
+    axios.get(queryString).then((response)=>{
+      console.log(response.data);
+    }).catch((reason)=>{
+      console.log(reason);
+    });
   };
+
   return (
     <div className="input-card-container">
       <div className="input-container">
