@@ -4,10 +4,11 @@ import axios from 'axios';
 
 
 import "./InputCard.css";
+import SimpleTable from "./Table";
 
 function InputCard() {
   const [userName, setUserName] = useState("");
-
+  const [circle, setCircle] = useState([]);
   const onUsernameChange = (ev) => {
     setUserName(ev.target.value);
   };
@@ -19,12 +20,14 @@ function InputCard() {
     console.log(queryString);
     axios.get(queryString).then((response)=>{
       console.log(response.data);
+      setCircle(response.data.circle);
     }).catch((reason)=>{
       console.log(reason);
     });
   };
 
   return (
+    <div className="container">
     <div className="input-card-container">
       <div className="input-container">
         <TextField
@@ -40,7 +43,10 @@ function InputCard() {
         <Button variant="contained" onClick={onGenerateClick} size="medium" className="button-container">
           Generate
         </Button>
+        
       </div>
+    </div>
+    <SimpleTable data={circle}/>
     </div>
   );
 }

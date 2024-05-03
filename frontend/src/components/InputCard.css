@@ -1,6 +1,7 @@
 .input-card-container{
     height: 100px;
     width: 400px;
+    margin-right: 40px;
     box-shadow: black 10px;
     padding: 10px;
     justify-content: center;
@@ -18,4 +19,12 @@
 }
 .button-container{
     width: 120px;
+}
+.container{
+    display: flex;
+    box-shadow: black 10px;
+    padding: 10px;
+    justify-content: center;
+    box-shadow: #777 2px 2px 10px;
+    border-radius: 8px;
 }
