@@ -11,11 +11,11 @@ export default function SimpleTable(props) {
   console.log(props);
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 400 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">Number</TableCell>
-            <TableCell align="right">Username</TableCell>
+            <TableCell align="left">Number</TableCell>
+            <TableCell align="left">Username</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -24,8 +24,8 @@ export default function SimpleTable(props) {
               key={user}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell align="right">{index+1}</TableCell>
-              <TableCell align="right">{user}</TableCell>
+              <TableCell align="left">{index+1}</TableCell>
+              <TableCell align="left">{user}</TableCell>
             </TableRow>
           ))}
         </TableBody>

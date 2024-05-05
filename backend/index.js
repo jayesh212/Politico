@@ -4,6 +4,27 @@ const app = express();
 const axios = require("axios");
 const PORT = 3000;
 
+const doesPostHaveKeyword = (text,keyword)=>{
+    let regex = new RegExp("\\b" + keyword + "\\b");
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+        if(match[1]!=''){
+            return true;
+        }
+    }
+    return false;
+}
+
+const getAllValidPosts = (posts,keyword)=>{
+    var validPosts = []
+    posts.forEach((post)=>{
+        if(doesPostHaveKeyword(post.text,keyword)){
+            validPosts.push(post);
+        }
+    })
+    return validPosts
+}
+
 const getUsersFromText = (text)=>{
     if(text== undefined || text =='' || text ==null)return [];
     const users = new Set();
@@ -18,6 +39,7 @@ const getUsersFromText = (text)=>{
 const getUsers = (response) => {
   if(response == undefined ||response ==[] || response == null)return [];
   const users = new Set();
+  
   response.forEach((interaction)=>{
     getUsersFromText(interaction.text).forEach((user)=>{
         users.add(user);
@@ -30,16 +52,23 @@ const getUsers = (response) => {
   })
   return users;
 };
-
+function shuffle(handles) {
+    let currentIndex = handles.length;
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [handles[currentIndex], handles[randomIndex]] = [
+        handles[randomIndex], handles[currentIndex]];
+    }
+    return handles
+}
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("Hello from Politico");
-});
 
 app.get("/query", async (req, res) => {
   const circle = new Set();
-  const userName = req.query.username;
+  const userName = req.query.username.toLowerCase();
+  const keyword  = req.query.keyword.toLowerCase();
   var queryString = `https://api.twitterpicker.com/user/data?minimal=twittercircle&id=${userName}`;
   const initialResponse = await axios.get(queryString);
   if (initialResponse.data.result === "error") {
@@ -53,16 +82,20 @@ app.get("/query", async (req, res) => {
   var queryString = `https://api.twitterpicker.com/user/timeline?minimal=twittercircle&username=${id}`;
   var timelineResponse = await axios.get(queryString);
   var timelineCursor = timelineResponse.data.cursor;
+  console.log(getAllValidPosts(timelineResponse.data.entries,keyword))
   getUsers(timelineResponse.data.entries).forEach((user)=>{
     circle.add(user);
-  });;
-
+  });
+  var count = 0;
   while (timelineCursor) {
+    count++;
+    if(count>5)break;
     queryString = `https://api.twitterpicker.com/user/timeline?minimal=twittercircle&username=${id}&cursor=${timelineCursor}`;
     timelineResponse = await axios.get(queryString);
     if(timelineResponse.data.entries == undefined || timelineResponse.data.entries == ''){
         break;
     }
+    console.log(getAllValidPosts(timelineResponse.data.entries,keyword))
     getUsers(timelineResponse.data.entries).forEach((user)=>{
         circle.add(user);
       });
@@ -74,8 +107,10 @@ app.get("/query", async (req, res) => {
   getUsers(likesResponse.entries).forEach((user)=>{
     circle.add(user);
   });
-
+  count = 0;
   while (likesCursor) {
+    count++;
+    if(count>5)break;
     queryString = `https://api.twitterpicker.com/user/likes?minimal=twittercircle&username=${id}&cursor=${timelineCursor}`;
     likesResponse = await axios.get(queryString);
     if(likesResponse.data.entries == undefined || likesResponse.data.entries == ''){
@@ -88,8 +123,11 @@ app.get("/query", async (req, res) => {
   }
   var handles = [];
   circle.forEach((handle)=>{
+    handle = handle.toLowerCase();
+    if(handle==`@${userName}`)return;
     handles.push(handle);
   })
+  handles = shuffle(handles);
   res.status(200).json({
     status: "success",
     circle: handles

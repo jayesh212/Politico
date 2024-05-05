@@ -1,5 +1,5 @@
 .input-card-container{
-    height: 100px;
+    height: 200px;
     width: 400px;
     margin-right: 40px;
     box-shadow: black 10px;
@@ -9,6 +9,7 @@
     border-radius: 8px;
 }
 .input-container{
+    margin-top: 25px;
     padding-top: 20px;
     display: flex;
     flex-direction: row;
@@ -27,4 +28,5 @@
     justify-content: center;
     box-shadow: #777 2px 2px 10px;
     border-radius: 8px;
+    margin-top: 150px;
 }

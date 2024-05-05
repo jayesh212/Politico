@@ -3,4 +3,12 @@
     width: 100vw;
     height: 32px;
     background-color: #2196f3;
+    justify-content: center;
+    align-items: center;
+}
+.header-text{
+    font-size: 16pt;
+    color: white;
+    text-align: center;
+    font-family:sans-serif
 }
